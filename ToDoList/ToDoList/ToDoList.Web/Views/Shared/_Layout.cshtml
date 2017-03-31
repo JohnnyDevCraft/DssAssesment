@@ -1,0 +1,48 @@
+﻿@{
+	const string applicationName = "To-Do List";
+}<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewBag.Title - @applicationName</title>
+	<link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+	@Styles.Render("~/Content/css")
+</head>
+<body>
+    <header>
+        @Html.ActionLink(applicationName, "Index", "Tasks", new { area = "" }, new { @class = "btn btn-primary btn-lg btn-block" })
+    </header>
+    <div class="container body-content">
+        @{
+            var successMessage = TempData["SuccessMessage"] as string;
+
+            if (!string.IsNullOrWhiteSpace(successMessage))
+            {
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    @successMessage
+                </div>
+            }
+
+            var errorMessage = TempData["ErrorMessage"] as string;
+
+            if (!string.IsNullOrWhiteSpace(errorMessage))
+            {
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    @errorMessage
+                </div>
+            }
+
+
+        }
+        @RenderBody()
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

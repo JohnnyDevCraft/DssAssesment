@@ -1,0 +1,65 @@
+﻿@using System.Globalization;
+@using ToDoList.Web.Models;
+@model CreateTaskViewModel
+@{
+	ViewBag.Title = "Create New Task";
+}
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm())
+{
+	@Html.AntiForgeryToken()
+
+	<div class="form-horizontal">
+		@Html.ValidationSummary(true, string.Empty, new { @class = "text-danger" })
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10 padding-left-right-0">
+				@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", autofocus = "autofocus" } })
+				@Html.ValidationMessageFor(model => model.Name, string.Empty, new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10 padding-left-right-0">
+				@Html.TextAreaFor(model => model.Description, htmlAttributes: new { @class = "form-control", rows = "3" })
+				@Html.ValidationMessageFor(model => model.Description, string.Empty, new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.Priority, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10 padding-left-right-0">
+				<input type="number" class="form-control" name="@Html.NameFor(model => model.Priority)" value="@(Model.Priority?.ToString(NumberFormatInfo.InvariantInfo))" />
+				@Html.ValidationMessageFor(model => model.Priority, string.Empty, new { @class = "text-danger" })
+			</div>
+		</div>
+
+		<div class="form-group">
+			@Html.LabelFor(model => model.DueDate, htmlAttributes: new { @class = "control-label col-md-2" })
+			<div class="col-md-10 input-group">
+				<span>
+					<input type="text" class="form-control datepicker" name="@Html.NameFor(model => model.DueDate)" value="@(Model.DueDate?.ToShortDateString())" />
+					@Html.ValidationMessageFor(model => model.DueDate, string.Empty, new { @class = "text-danger" })
+				</span>
+				<span class="input-group-addon">
+					<i class="fa fa-fw fa-calendar"></i>
+				</span>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-md-offset-5 col-md-2">
+				<input type="submit" value="Submit" class="btn btn-primary btn-block" />
+			</div>
+		</div>
+	</div>
+}
+@section Scripts
+{
+	<script type="text/javascript">
+		var shortDatePattern = "@(DateTimeFormatInfo.CurrentInfo.ShortDatePattern.ToLowerInvariant())";
+	</script>
+	@Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,87 @@
+﻿@using System.Globalization;
+@model ToDoList.Web.Models.TaskEditViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <h4>@Model.Name</h4>
+    <hr />
+
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            <label for="inputName" class="col-md-2 control-label">Name</label>
+            <div class="col-md-10 padding-left-right-0">
+                <input type="text" value="@Model.Name" class="form-control" id="inputName" placeholder="Name" name="Name" />
+                @Html.ValidationMessageFor(model => model.Name, String.Empty, new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputDescription" class="col-md-2 control-label">@Html.LabelFor(model => model.Description)</label>
+            <div class="col-md-10 padding-left-right-0">
+                <textarea class="form-control" id="inputDescription" rows="3" name="Description">@Model.Description</textarea>
+                @Html.ValidationMessageFor(model => model.Description, String.Empty, new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputPriority" class="col-md-2 control-label">Priority</label>
+            <div class="col-md-10 padding-left-right-0">
+                <input type="text" value="@Model.Priority" class="form-control" id="inputPriority" placeholder="Priority" name="Priority" />
+                @Html.ValidationMessageFor(model => model.Priority, String.Empty, new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputDueDate" class="col-md-2 control-label">Due Date</label>
+            <div class="col-md-10 input-group">
+                <span>
+                    @Html.TextBoxFor(model => model.DueDate, Model.DueDate.ToString("MM/dd/yyyy"), new { @class = "form-control datepicker" })
+                    @Html.ValidationMessageFor(model => model.DueDate, String.Empty, new { @class = "text-danger" })
+                </span>
+                <span class="input-group-addon">
+                    <i class="fa fa-fw fa-calendar"></i>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="inputCompleted " class="col-md-2 control-label">
+                Completed?
+            </label>
+            <div class="col-md-10 padding-left-right-0">
+                @Html.CheckBoxFor(model => model.Completed)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10 padding-left-right-0">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        var shortDatePattern = "@(DateTimeFormatInfo.CurrentInfo.ShortDatePattern.ToLowerInvariant())";
+    </script>
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

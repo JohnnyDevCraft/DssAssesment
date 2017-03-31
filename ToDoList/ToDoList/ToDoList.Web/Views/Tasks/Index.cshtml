@@ -1,0 +1,63 @@
+﻿@using ToDoList.Web.Models;
+@model TasksViewModel
+@{
+	ViewBag.Title = "Tasks";
+}
+@if (Model.Tasks.Count != 0)
+{
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<th>
+					Task
+				</th>
+				<th>
+					Priority
+				</th>
+				<th>
+					Due Date
+				</th>
+				<th>
+					Completed
+				</th>
+                <th></th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var task in Model.Tasks)
+			{
+				<tr>
+					<td>
+						<strong>@task.Name</strong><br />
+						@task.Description
+					</td>
+					<td>
+						@task.Priority
+					</td>
+					<td>
+						@task.DueDate
+					</td>
+					<td>
+						@task.Completed
+					</td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", routeValues: new { id = task.Id }, htmlAttributes: new { @class = "btn btn-primary btn-sm" })
+                        @Html.ActionLink("Delete", "Delete", routeValues: new { id = task.Id }, htmlAttributes: new { @class = "btn btn-danger btn-sm" })
+                    </td>
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+else
+{
+	<div class="alert alert-info" role="alert">
+		There are no tasks.
+	</div>
+}
+
+<div class="form-group">
+	<div class="col-md-offset-5 col-md-2">
+		@Html.ActionLink("Create New Task", "Create", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-block" })
+	</div>
+</div>
