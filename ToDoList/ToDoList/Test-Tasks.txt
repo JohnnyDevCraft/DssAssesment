@@ -1,0 +1,11 @@
+Make the following changes to the solution:
+1.       Add a CompletedAt column to the Tasks table to track when a task is completed in datetime format.
+2.       Update the solution to display a CompletedAt column in the Task List view.
+3.       Allow users to select a category for each task. Examples could include home, work, and hobby. The category selection should be available on the Create and Edit views.
+4.       Display the Task Category name on the Task List view.
+5.       Implement a client-side (e.g. javascript) sort feature on the Task List view and allow sorting on Due Date and Priority.
+6.       Implement a client-side feature on the List view such that only incomplete tasks display by default, but the user can choose to display all tasks.
+ 
+Optional updates:
+1.       Implement a cancel feature that allows the user to cancel a Task and store a cancellation reason in the database. Cancelled tasks should not be listed by default on the Tasks view.
+ 
