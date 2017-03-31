@@ -52,6 +52,15 @@
   <ItemGroup>
     <Compile Include="AsyncService.cs" />
     <Compile Include="EntityStore.cs" />
+    <Compile Include="Migrations\201703311613579_InitialCreate.cs" />
+    <Compile Include="Migrations\201703311613579_InitialCreate.Designer.cs">
+      <DependentUpon>201703311613579_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201703311648406_new field [CompletedAt] added to  [Task] table.cs" />
+    <Compile Include="Migrations\201703311648406_new field [CompletedAt] added to  [Task] table.Designer.cs">
+      <DependentUpon>201703311648406_new field [CompletedAt] added to  [Task] table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ReflectionExtensions.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="TaskStore.cs" />
@@ -67,6 +76,14 @@
       <Project>{315651a4-b20a-44fc-9756-9a8728e1b9b8}</Project>
       <Name>ToDoList</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201703311613579_InitialCreate.resx">
+      <DependentUpon>201703311613579_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201703311648406_new field [CompletedAt] added to  [Task] table.resx">
+      <DependentUpon>201703311648406_new field [CompletedAt] added to  [Task] table.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
