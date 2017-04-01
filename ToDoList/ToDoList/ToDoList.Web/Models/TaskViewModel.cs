@@ -16,6 +16,8 @@ namespace ToDoList.Web.Models
 
 		public string Completed { get; internal set; }
 
+        public string CompletedAt { get; internal set; }
+
         public TaskViewModel(ITask task)
         {
             Id = task.Id;
@@ -24,6 +26,7 @@ namespace ToDoList.Web.Models
             Priority = task.Priority.ToString("N0", NumberFormatInfo.CurrentInfo);
             DueDate = task.DueDate.ToLongDateString();
             Completed = task.IsCompleted ? "Complete" : null;
+            CompletedAt = task.CompletedAt.HasValue ? task.CompletedAt.Value.ToString("G") : "";
         }
 	}
 }

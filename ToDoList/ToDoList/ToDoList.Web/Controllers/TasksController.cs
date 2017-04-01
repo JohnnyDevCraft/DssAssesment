@@ -126,8 +126,10 @@ namespace ToDoList.Web.Controllers
 					Priority = viewModel.Priority,
 					DueDate = viewModel.DueDate,
 					IsCompleted = viewModel.Completed
+                    
 				};
 
+                
 				var validationResults = await TaskManager.Update(task);
 
 				if (validationResults == null)

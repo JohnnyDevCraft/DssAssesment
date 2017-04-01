@@ -15,5 +15,7 @@ namespace ToDoList
 		DateTime DueDate { get; }
 
 		bool IsCompleted { get; }
+
+        DateTime? CompletedAt { get; }
 	}
 }

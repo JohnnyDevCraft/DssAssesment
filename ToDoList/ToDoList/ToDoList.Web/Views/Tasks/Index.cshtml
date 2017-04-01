@@ -20,6 +20,7 @@
 				<th>
 					Completed
 				</th>
+                <th>Completed At</th>
                 <th></th>
 			</tr>
 		</thead>
@@ -40,6 +41,9 @@
 					<td>
 						@task.Completed
 					</td>
+                    <td>
+                        @task.CompletedAt
+                    </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", routeValues: new { id = task.Id }, htmlAttributes: new { @class = "btn btn-primary btn-sm" })
                         @Html.ActionLink("Delete", "Delete", routeValues: new { id = task.Id }, htmlAttributes: new { @class = "btn btn-danger btn-sm" })

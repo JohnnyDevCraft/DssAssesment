@@ -24,6 +24,6 @@ namespace ToDoList.EntityFramework
 		public bool IsCompleted { get; set; }
 
         [Column(TypeName ="datetime2")]
-        public DateTime CompletedAt { get; set; }
+        public DateTime? CompletedAt { get; set; }
     }
 }
