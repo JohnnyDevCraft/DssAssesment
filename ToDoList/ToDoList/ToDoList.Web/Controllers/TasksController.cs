@@ -125,7 +125,8 @@ namespace ToDoList.Web.Controllers
 					Description = viewModel.Description,
 					Priority = viewModel.Priority,
 					DueDate = viewModel.DueDate,
-					IsCompleted = viewModel.Completed
+					IsCompleted = viewModel.Completed,
+                    CompletedAt = viewModel.CompletedAt
                     
 				};
 

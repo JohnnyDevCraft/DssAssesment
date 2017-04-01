@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 
 namespace ToDoList.Web.Models
 {
@@ -9,13 +10,14 @@ namespace ToDoList.Web.Models
         public string Name { get; internal set; }
 
 		public string Description { get; internal set; }
-
+               
 		public string Priority { get; internal set; }
-
+        
 		public string DueDate { get; internal set; }
-
+        
 		public string Completed { get; internal set; }
 
+        [DataType(DataType.DateTime)]
         public string CompletedAt { get; internal set; }
 
         public TaskViewModel(ITask task)
