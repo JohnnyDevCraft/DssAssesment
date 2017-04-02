@@ -1,10 +1,10 @@
 ﻿
 @{
-    ViewBag.Title = "Categories";
+    ViewBag.Title = "Tasks";
 }
 
 <div class="container" ng-controller="categoriesController">
-    <div id="listView">
+    <div id="listView" ng-hide="view != 'List'">
         <h2>Current Categories</h2>
         <table class="table">
             <tr>
@@ -25,7 +25,7 @@
             </tr>
         </table>
     </div>
-    <div id="EditItem">
+    <div id="EditItem" ng-hide="view != 'Edit'">
         <form>
             <h2>Edit Item: {{itemEditing.Name}}</h2>
             <div class="form-group">
@@ -40,7 +40,7 @@
             <button class="btn btn-danger" ng-click="CancelEdit()">Cancel</button>
         </form>
     </div>
-    <div id="CreateItem">
+    <div id="CreateItem" ng-hide="view != 'Create'">
         <form>
             <h2>Create New Item</h2>
             <div class="form-group">
@@ -57,4 +57,10 @@
     </div>
     
 </div>
+
+@section ngScripts{
+    
+    <script type="text/javascript" src="~/Scripts/ngapp/categoriesController.js"></script>
+
+    }
 
