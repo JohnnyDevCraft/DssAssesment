@@ -25,5 +25,8 @@ namespace ToDoList.EntityFramework
 
         [Column(TypeName ="datetime2")]
         public DateTime? CompletedAt { get; set; }
+
+        public int CategoryId { get; set; }
+
     }
 }

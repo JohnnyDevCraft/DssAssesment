@@ -85,6 +85,10 @@ namespace ToDoList
 			{
 				yield return new ValidationResult("Due Date can't be a past date.", new[] { nameof(task.DueDate) });
 			}
+            if (task.CategoryId == 0)
+            {
+                yield return new ValidationResult("You must have a valid category selected.", new[] { nameof(task.CategoryId) });
+            }
 			yield break;
 		}
 

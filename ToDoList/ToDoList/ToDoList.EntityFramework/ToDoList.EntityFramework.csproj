@@ -51,6 +51,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsyncService.cs" />
+    <Compile Include="Category.cs" />
+    <Compile Include="CategoryStore.cs" />
     <Compile Include="EntityStore.cs" />
     <Compile Include="Migrations\201703311613579_InitialCreate.cs" />
     <Compile Include="Migrations\201703311613579_InitialCreate.Designer.cs">

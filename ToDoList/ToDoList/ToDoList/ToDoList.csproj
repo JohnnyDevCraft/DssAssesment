@@ -40,6 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddResult.cs" />
+    <Compile Include="CategoryManager.cs" />
+    <Compile Include="ICategory.cs" />
+    <Compile Include="ICategoryStore.cs" />
     <Compile Include="Services.cs" />
     <Compile Include="IAsyncService.cs" />
     <Compile Include="ITask.cs" />

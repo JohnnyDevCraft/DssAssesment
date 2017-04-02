@@ -17,5 +17,7 @@ namespace ToDoList
 		bool IsCompleted { get; }
 
         DateTime? CompletedAt { get; }
+
+        int CategoryId { get; }
 	}
 }
