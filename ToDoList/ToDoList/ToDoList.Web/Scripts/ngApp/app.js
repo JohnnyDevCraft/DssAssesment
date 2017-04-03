@@ -2,4 +2,4 @@
 var ngAppRequires = [];
 var ngCurrentLoc = window.location.origin;
 
-var ngApplication = angular(ngAppName, ngAppRequires)
+var ngApplication = angular.module(ngAppName, ngAppRequires);
