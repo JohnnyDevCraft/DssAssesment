@@ -56,7 +56,7 @@ namespace ToDoList.Web.Extensions
                 Id = task.Id,
                 Name = task.Name,
                 Priority = task.Priority
-            }
+            };
         }
     }
 }
