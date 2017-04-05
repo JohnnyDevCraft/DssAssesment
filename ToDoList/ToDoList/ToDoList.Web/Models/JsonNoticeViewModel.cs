@@ -10,7 +10,7 @@ namespace ToDoList.Web.Models
     {
         public string Result { get; set; }
         public T Value { get; set; }
-        public IList<ValidationResult> ValidationResults { get; set; }
+        public IList<string> ValidationResults { get; set; }
 
     }
 }

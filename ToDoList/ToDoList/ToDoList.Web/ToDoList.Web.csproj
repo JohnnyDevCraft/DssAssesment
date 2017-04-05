@@ -147,6 +147,7 @@
     <Compile Include="Models\ModelStateDictionaryExtensions.cs" />
     <Compile Include="Models\CreateTaskViewModel.cs" />
     <Compile Include="Models\TaskEditViewModel.cs" />
+    <Compile Include="Models\TaskJsonViewModel.cs" />
     <Compile Include="Models\TasksViewModel.cs" />
     <Compile Include="Models\TaskViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -360,6 +361,8 @@
     <Content Include="Scripts\moment.min.js" />
     <Content Include="Scripts\ngApp\app.js" />
     <Content Include="Scripts\ngApp\categoriesController.js" />
+    <Content Include="Scripts\ngApp\dlService.js" />
+    <Content Include="Scripts\ngApp\tasksController.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

@@ -78,7 +78,7 @@ namespace ToDoList
             {
                 yield return new ValidationResult("Name cannot be longer than 30 characters", new[] { nameof(category.Name) });
             }
-            if (category.Description?.Length < 250)
+            if (category.Description?.Length >  250)
             {
                 yield return new ValidationResult("Description cannot be longer than 250 characters.", new[] { nameof(category.Description) });
             }

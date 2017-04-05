@@ -4,6 +4,7 @@
 }
 
 <div class="container" ng-controller="categoriesController">
+    
     <div id="listView" ng-hide="view != 'List'">
         <h2>Current Categories</h2>
         <table class="table">
@@ -13,30 +14,31 @@
                 <th>Description</th>
                 <th></th>
             </tr>
-            <tr ng-repeat="cat in categories track by cat.Id">
+            <tr ng-repeat="cat in categories.categories">
                 <td>{{cat.Id}}</td>
                 <td>{{cat.Name}}</td>
                 <td>{{cat.Description}}</td>
                 <td>
-                    <button class="btn btn-lg btn-default" ng-click="EditItem({{cat.Id}})">Edit</button>
-                    <button class="btn btn-lg btn-success" ng-click="NewItem()">New</button>
-                    <button class="btn btn-lg btn-danger" ng-click="Delete({{cat.Id}})">Delete</button>
+                    <button class="btn btn-xs btn-default" ng-click="EditItem(cat.Id)">Edit</button>
+                    <button class="btn btn-xs btn-success" ng-click="NewItem()">New</button>
+                    <button class="btn btn-xs btn-danger" ng-click="Delete(cat.Id)">Delete</button>
                 </td>
             </tr>
         </table>
+        <button class="btn btn-lg btn-success" ng-show="categories.categories.length === 0" ng-click="NewItem()">Create New Category</button>
     </div>
     <div id="EditItem" ng-hide="view != 'Edit'">
         <form>
             <h2>Edit Item: {{itemEditing.Name}}</h2>
             <div class="form-group">
-                <label for="Name">Name</label>
-                <input type="text" class="form-control" ng-model="itemEditing.Name" id="Name" placeholder="Name">
+                <label for="EditName">Name</label>
+                <input type="text" class="form-control" ng-model="itemEditing.Name" id="EditName" placeholder="EditName">
             </div>
             <div class="form-group">
-                <label for="Description">Description</label>
-                <input type="text" class="form-control" ng-model="itemEditing.Description" id="Description" placeholder="Description">
+                <label for="EditDescription">Description</label>
+                <input type="text" class="form-control" ng-model="itemEditing.Description" id="EditDescription" placeholder="EditDescription">
             </div>
-            <button class="btn btn-default" ng-click="SaveEdit()">Save Changes</button>
+            <button class="btn btn-default" ng-click="CompleteEdit()">Save Changes</button>
             <button class="btn btn-danger" ng-click="CancelEdit()">Cancel</button>
         </form>
     </div>
@@ -44,22 +46,33 @@
         <form>
             <h2>Create New Item</h2>
             <div class="form-group">
-                <label for="Name">Name</label>
-                <input type="text" class="form-control" ng-model="newItem.Name" id="Name" placeholder="Name">
+                <label for="NewName">Name</label>
+                <input type="text" class="form-control" ng-model="itemCreating.Name" id="NewName" placeholder="NewName">
             </div>
             <div class="form-group">
-                <label for="Description">Description</label>
-                <input type="text" class="form-control" ng-model="newItem.Description" id="Description" placeholder="Description">
+                <label for="NewDescription">Description</label>
+                <input type="text" class="form-control" ng-model="itemCreating.Description" id="NewDescription" placeholder="NewDescription">
             </div>
-            <button class="btn btn-default" ng-click="SaveNew()">Save New</button>
+            <button class="btn btn-default" ng-click="CompleteNew()">Save New</button>
             <button class="btn btn-danger" ng-click="CancelNew()">Cancel</button>
         </form>
     </div>
-
+    
+    <br/><br/>
+    <div id="ErrorBlock" ng-hide="!ErrorsReturned">
+        <div class="panel panel-danger">
+            <div class="panel-heading">Errors Found</div>
+            <div class="panel-body">
+                <p ng-repeat="error in Errors">
+                    - {{error}}
+                </p>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section ngScripts{
-
+    <script type="text/javascript" src="~/Scripts/ngApp/dlService.js"></script>
     <script type="text/javascript" src="~/Scripts/ngapp/categoriesController.js"></script>
 
 }

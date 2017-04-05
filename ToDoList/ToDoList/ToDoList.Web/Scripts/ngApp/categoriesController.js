@@ -1,50 +1,97 @@
-﻿(function () {
-    var ctrlName = "categoriesController";
+﻿
+var ctrlName = "categoriesController";
 
-    ngApplication.controller(ctrlName, function ($scope) {
+var catagoriesController = ngApplication.controller(ctrlName,
+    ["$scope", "$http", "dlservice", function ($scope, $http, dlservice) {
 
-        $scope.categories = { [{ id: 1, Name: 'name', Description: 'some Description' }, { Id: 2, Name: 'Other', Description: 'Another Category' }]};
+        $scope.categories = {
+            "categories": [
+                {
+                    "Id": 1,
+                    "Name": "name",
+                    "Description": "some Description"
+                },
+                {
+                    "Id": 2,
+                    "Name": "Other",
+                    "Description": "Another Category"
+                }
+            ]
+        };
 
-        $scope.itemEditing = { id: 1, Name: 'name', Description: 'Some Description' };
+        $scope.itemEditing = {};
 
-        $scope.GetEditItem = function (id) {
-
-            for (var i = 0; i < $scope.categories.Length; i++) {
-                if ($scope.categories[i].Id == id) {
-                    $scope.itemEditing = $scope.categories[i];
+        $scope.GetEditItem = function(id) {
+            $scope.itemEditing = {};
+            for (var i = 0; i < $scope.categories.categories.length; i++) {
+                if ($scope.categories.categories[i].Id === id) {
+                    $scope.itemEditing = $scope.categories.categories[i];
                 }
             }
-        }
+        };
 
         $scope.view = "List";
 
         $scope.itemCreating = {};
 
-        $scope.EditItem = function (id) {
+        $scope.ErrorsReturned = false;
+
+        $scope.Errors = ["Error 1", "Error 2"];
+
+        $scope.EditItem = function(id) {
             $scope.GetEditItem(id);
             $scope.view = "Edit";
-        }
+        };
 
-        $scope.NewItem = function () {
-            $scope.itemCreating.Name = '';
-            $scope.itemCreating.Description = '';
+        $scope.NewItem = function() {
+            $scope.itemCreating.Name = "";
+            $scope.itemCreating.Description = "";
             $scope.view = "Create";
-        }
+        };
 
-        $scope.CancelEdit = function () {
+        $scope.CancelEdit = function() {
             $scope.view = "List";
+            $scope.ErrorsReturned = false;
+        };
+
+        $scope.CompleteEdit = function() {
+            dlservice.Categories.Update($scope.itemEditing, $scope.GetCategories, $scope.SetErrors);
         }
 
-        $scope.CancelNew = function () {
+        $scope.CancelNew = function() {
             $scope.view = "List";
-        }
-    }
+            $scope.ErrorsReturned = false;
+        };
 
+        $scope.CompleteNew = function () {
+            dlservice.Categories.Create($scope.itemCreating, $scope.GetCategories, $scope.SetErrors);
+        };
 
+        $scope.GetCategories = function() {
+            dlservice.Categories.Get($scope.SetCategories);
+            $scope.view = "List";
+        };
 
+        $scope.SetCategories = function(data) {
+            $scope.categories.categories = data;
+        };
 
+        $scope.SetErrors = function(errors) {
+            $scope.Errors = errors;
+            $scope.ErrorsReturned = true;
+        };
 
+        $scope.ClearErrors = function() {
+            $scope.ErrorsReturned = false;
+        };
 
-    });
+        $scope.Delete = function(id) {
+            dlservice.Categories.Delete(id, $scope.GetCategories, $scope.SetErrors);
+        };
 
-}());
+        $scope.GetCategories();
+
+        
+
+    }]
+);
