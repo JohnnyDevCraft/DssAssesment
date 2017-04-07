@@ -30,5 +30,9 @@ namespace ToDoList.EntityFramework
 
         [ForeignKey("CategoryId")]
         public Category Category { get; set; }
+
+	    public bool Canceled { get; set; }
+
+	    public string CancelReason { get; set; }
     }
 }

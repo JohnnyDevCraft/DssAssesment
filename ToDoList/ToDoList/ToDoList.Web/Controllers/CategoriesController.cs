@@ -42,7 +42,6 @@ namespace ToDoList.Web.Controllers
         }
 
         [HttpGet]
-        [Route("categories/{id:int}")]
         public async Task<JsonResult> GetAsync(int id)
         {
             var result = await _cm.GetCategoryByIdAsync(id);
@@ -137,7 +136,6 @@ namespace ToDoList.Web.Controllers
         }
 
         [HttpGet]
-        [Route("categories/delete/{id:int}")]
         public async Task<JsonResult> DeleteAsync(int id)
         {
             try

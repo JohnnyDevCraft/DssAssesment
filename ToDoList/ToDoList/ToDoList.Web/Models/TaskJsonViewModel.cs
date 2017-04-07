@@ -31,5 +31,8 @@ namespace ToDoList.Web.Models
         public string CategoryId { get; set; }
 
         public string Category { get; set; }
+
+        public bool Canceled { get; set; }
+        public string CancelReason { get; set; }
     }
 }

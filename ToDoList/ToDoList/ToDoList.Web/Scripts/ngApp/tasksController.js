@@ -98,7 +98,7 @@ var TaskController = ngApplication.controller(TaskControllerName,
             if ($scope.SearchString === "") {
                 $scope.ShowAll();
             } else {
-                dlservice.Tasks.Search($scope.SearchString, $scope.LoadTasks, $scope.ShowErrors);
+                dlservice.Tasks.Search($scope.SearchString, $scope.LoadTasksViaSearch, $scope.ShowErrors);
             }
         }
 
@@ -138,6 +138,51 @@ var TaskController = ngApplication.controller(TaskControllerName,
         $scope.CompleteCreate = function() {
             $("#ProcessingModal").modal('show');
             dlservice.Tasks.Create($scope.TaskCreating, $scope.ShowAll, $scope.ShowErrors);
+        }
+
+        $scope.UnCancel = function (id) {
+            $scope.AllTasks.forEach(function (item) {
+                if (item.Id === id) {
+                    $scope.TaskEditing = item;
+                }
+            });
+            $scope.TaskEditing.Canceled = false;
+            $scope.TaskEditing.CancelReason = "";
+            dlservice.Tasks.Update($scope.TaskEditing, $scope.ShowAll, $scope.ShowErrors);
+        }
+
+        $scope.Cancel = function(id) {
+            $scope.AllTasks.forEach(function (item) {
+                if (item.Id === id) {
+                    $scope.TaskEditing = item;
+                }
+            });
+            $("#CancelModal").modal("show");
+        }
+        $scope.CancelCancellation = function(){
+            $("#CancelModal").modal("hide");
+        }
+        $scope.CommitCancel = function() {
+            $scope.TaskEditing.Canceled = true;
+            dlservice.Tasks.Update($scope.TaskEditing, $scope.ShowAll, $scope.ShowErrors);
+            $("#CancelModal").modal("hide");
+        }
+
+
+
+        $scope.UnComplete = function (id) {
+            var cItem = {};
+            $scope.AllTasks.forEach(function (item) {
+                if (item.Id === id) {
+                    cItem = item;
+                }
+            });
+
+            cItem.Completed = false;
+            cItem.CompletedAt = null;
+            $("#ProcessingModal").modal('show');
+            dlservice.Tasks.Update(cItem, $scope.ShowAll, $scope.ShowErrors);
+
         }
 
         $scope.Complete = function(id) {
@@ -216,6 +261,18 @@ var TaskController = ngApplication.controller(TaskControllerName,
             $("#ProcessingModal").modal('hide');
         }
 
+
+        $scope.LoadTasksViaSearch = function (data) {
+            $scope.AllTasks = data;
+            $scope.CurrentSortBy = "";
+            $scope.SortTasks("Name");
+            $scope.ErrorsActive = false;
+            $scope.ViewType = "List";
+            $scope.ViewAll();
+            $("#ProcessingModal").modal('hide');
+        }
+
+
         $scope.ShowErrors = function(errors) {
             $scope.Errors = errors;
             $scope.ErrorsActive = true;
@@ -225,20 +282,30 @@ var TaskController = ngApplication.controller(TaskControllerName,
 
         $scope.ViewActive = function () {
             $scope.FilteredTasks = $scope.AllTasks.filter(function (value) {
-                return value.Completed === false;
+                $scope.ResultType = "Active";
+                return value.Completed === false && value.Canceled === false;
             });
         }
         $scope.ViewComplete = function () {
             $scope.FilteredTasks = $scope.AllTasks.filter(function (value) {
-                return value.Completed === true;
+                $scope.ResultType = "Complete";
+                return value.Completed === true && value.Canceled === false;
             });
         }
         $scope.ViewAll = function () {
             $scope.FilteredTasks = $scope.AllTasks.filter(function (value) {
+                $scope.ResultType = "All";
                 return true;
             });
         }
+        $scope.ViewCanceled = function () {
+            $scope.FilteredTasks = $scope.AllTasks.filter(function (value) {
+                $scope.ResultType = "Canceled";
+                return value.Canceled === true;
+            });
+        }
 
+        $scope.ResultType = "";
 
 
         $scope.ShowAll = function() {

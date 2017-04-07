@@ -38,7 +38,9 @@ namespace ToDoList.Web.Extensions
                 Description = vm.Description,
                 CategoryId = int.Parse(vm.CategoryId),
                 Priority = vm.Priority,
-                IsCompleted = vm.Completed
+                IsCompleted = vm.Completed,
+                Canceled = vm.Canceled,
+                CancelReason = vm.CancelReason
             };
 
             if (vm.CompletedAt != null) t.CompletedAt = DateTime.Parse(vm.CompletedAt);
@@ -60,7 +62,9 @@ namespace ToDoList.Web.Extensions
                 Id = task.Id,
                 Name = task.Name,
                 Priority = task.Priority,
-                Category = task.Category.Name
+                Category = task.Category.Name,
+                Canceled = task.Canceled,
+                CancelReason = task.CancelReason
             };
         }
     }

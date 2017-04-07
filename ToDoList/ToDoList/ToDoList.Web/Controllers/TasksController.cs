@@ -10,6 +10,7 @@ using Tasks = System.Threading.Tasks;
 
 namespace ToDoList.Web.Controllers
 {
+    
 	public class TasksController : BaseJsonController<TaskJsonViewModel>
 	{
         #region Fields
@@ -46,110 +47,20 @@ namespace ToDoList.Web.Controllers
 		}
 
         #region Default Web Views
+
+        
         [HttpGet]
         public ActionResult Index()
 		{
 			return View();
 		}
 
-		public ActionResult Create()
-		{
-			var viewModel = new CreateTaskViewModel();
-			return View(viewModel);
-		}
-
-		[HttpPost]
-		public async Tasks.Task<ActionResult> Create(CreateTaskViewModel viewModel)
-		{
-			if (ModelState.IsValid)
-			{
-				var task = new Task
-				{
-					Name = viewModel.Name,
-					Description = viewModel.Description,
-					Priority = viewModel.Priority.GetValueOrDefault(),
-					DueDate = viewModel.DueDate.GetValueOrDefault()
-				};
-
-				var result = await TaskManager.AddAsync(task);
-				var validationResults = result.ValidationResults;
-
-				if (!validationResults.HasErrors())
-				{
-					TempData["SuccessMessage"] = $"Successfully created task {task.Name} ({result.Id.GetValueOrDefault().ToString(NumberFormatInfo.InvariantInfo)}).";
-					return RedirectToAction("Index");
-				}
-
-				ModelState.AddRange(validationResults);
-			}
-			return View(viewModel);
-		}
-
-		public async Tasks.Task<ActionResult> Delete(int id)
-		{
-			var task = await TaskManager.GetTaskById(id);
-
-			if (task == null)
-			{
-				TempData["ErrorMessage"] = $"Failed to delete task.";
-				return RedirectToAction("Index");
-			}
-
-			var success = await TaskManager.Delete(task);
-
-			if (success)
-			{
-				TempData["SuccessMessage"] = $"Successfully deleted task {task.Name} ({task.Id}).";
-			}
-			else
-			{
-				TempData["ErrorMessage"] = $"Failed to delete task {task.Name} ({task.Id}).";
-			}
-
-			return RedirectToAction("Index");
-		}
-
-		public async Tasks.Task<ActionResult> Edit(int id)
-		{
-			var task = await TaskManager.GetTaskById(id);
-			var viewTask = new TaskEditViewModel(task);
-			return View(viewTask);
-		}
-
-		[HttpPost]
-		public async Tasks.Task<ActionResult> Edit(TaskEditViewModel viewModel)
-		{
-			if (ModelState.IsValid)
-			{
-				var task = new Task
-				{
-					Id = viewModel.Id,
-					Name = viewModel.Name,
-					Description = viewModel.Description,
-					Priority = viewModel.Priority,
-					DueDate = viewModel.DueDate,
-					IsCompleted = viewModel.Completed,
-                    CompletedAt = viewModel.CompletedAt
-                    
-				};
-
-                
-				var validationResults = await TaskManager.Update(task);
-
-				if (validationResults == null)
-				{
-					TempData["SuccessMessage"] = $"Successfully edited task {task.Name} ({task.Id}).";
-					return RedirectToAction("Index");
-				}
-
-				ModelState.AddRange(validationResults);
-			}
-			return View(viewModel);
-		}
+		
 
         #endregion
 
         #region Json WebViews
+        
         [HttpGet]
 	    public async Tasks.Task<JsonResult> FindAsync(int id)
 	    {
@@ -162,6 +73,8 @@ namespace ToDoList.Web.Controllers
                 GetModel("Unable to locate record."), 
                 JsonRequestBehavior.AllowGet);
 	    }
+
+        
         [HttpGet]
         public async Tasks.Task<JsonResult> GetAllAsync()
 	    {
@@ -179,8 +92,11 @@ namespace ToDoList.Web.Controllers
 
 	        return Json(GetModels(models), JsonRequestBehavior.AllowGet);
 	    }
+
+
+        [Route("Tasks/SearchAsync/{searchVal}")]
         [HttpGet]
-        public async Tasks.Task<JsonResult> SearchAsync(string id)
+        public async Tasks.Task<JsonResult> SearchAsync(string searchVal)
 	    {
 	        try
 	        {
@@ -192,7 +108,7 @@ namespace ToDoList.Web.Controllers
                 }
 
                 var search =
-	                alltasks.Where(t => t.Name != null && t.Name.Contains(id) || t.Description != null && t.Description.Contains(id))
+	                alltasks.Where(t => t.Name != null && t.Name.Contains(searchVal) || t.Description != null && t.Description.Contains(searchVal))
 	                    .Select(t => t.ToViewModel())
 	                    .ToList();
 
@@ -205,6 +121,8 @@ namespace ToDoList.Web.Controllers
 	            return Json(GetModel(e), JsonRequestBehavior.AllowGet);
 	        }
 	    }
+
+        
         [HttpPost]
 	    public async Tasks.Task<JsonResult> CreateAsync([Bind(Include = "Name, Description, Priority, DueDate, CategoryId")]TaskJsonViewModel model)
 	    {
@@ -224,7 +142,9 @@ namespace ToDoList.Web.Controllers
                 return Json(GetModel(ex), JsonRequestBehavior.AllowGet);
             }
 	    }
-        [HttpPost]
+
+        
+        [HttpPut]
 	    public async Tasks.Task<JsonResult> UpdateAsync(TaskJsonViewModel model)
 	    {
 	        try
@@ -244,7 +164,9 @@ namespace ToDoList.Web.Controllers
 	            throw;
 	        }
 	    }
-        [HttpGet]
+
+        
+        [HttpDelete]
         public async Tasks.Task<JsonResult> DeleteAsync(int id)
 	    {
 	        try
