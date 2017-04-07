@@ -98,7 +98,7 @@ var TaskController = ngApplication.controller(TaskControllerName,
             if ($scope.SearchString === "") {
                 $scope.ShowAll();
             } else {
-                dlservice.Tasks.Search($scope.SearchString, $scope.LoadTasks, $scope.ShowErrors);
+                dlservice.Tasks.Search($scope.SearchString, $scope.LoadTasksViaSearch, $scope.ShowErrors);
             }
         }
 
@@ -261,6 +261,18 @@ var TaskController = ngApplication.controller(TaskControllerName,
             $("#ProcessingModal").modal('hide');
         }
 
+
+        $scope.LoadTasksViaSearch = function (data) {
+            $scope.AllTasks = data;
+            $scope.CurrentSortBy = "";
+            $scope.SortTasks("Name");
+            $scope.ErrorsActive = false;
+            $scope.ViewType = "List";
+            $scope.ViewAll();
+            $("#ProcessingModal").modal('hide');
+        }
+
+
         $scope.ShowErrors = function(errors) {
             $scope.Errors = errors;
             $scope.ErrorsActive = true;
@@ -270,25 +282,30 @@ var TaskController = ngApplication.controller(TaskControllerName,
 
         $scope.ViewActive = function () {
             $scope.FilteredTasks = $scope.AllTasks.filter(function (value) {
+                $scope.ResultType = "Active";
                 return value.Completed === false && value.Canceled === false;
             });
         }
         $scope.ViewComplete = function () {
             $scope.FilteredTasks = $scope.AllTasks.filter(function (value) {
+                $scope.ResultType = "Complete";
                 return value.Completed === true && value.Canceled === false;
             });
         }
         $scope.ViewAll = function () {
             $scope.FilteredTasks = $scope.AllTasks.filter(function (value) {
+                $scope.ResultType = "All";
                 return true;
             });
         }
         $scope.ViewCanceled = function () {
             $scope.FilteredTasks = $scope.AllTasks.filter(function (value) {
+                $scope.ResultType = "Canceled";
                 return value.Canceled === true;
             });
         }
 
+        $scope.ResultType = "";
 
 
         $scope.ShowAll = function() {

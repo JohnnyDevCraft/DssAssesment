@@ -79,7 +79,7 @@
                     });
                 },
                 "Update": function(obj, callback, error) {
-                    $http.post(ngCurrentLoc + "/Tasks/UpdateAsync", obj).then(function (response) {
+                    $http.put(ngCurrentLoc + "/Tasks/UpdateAsync", obj).then(function (response) {
                         if (response.data.Result === 'Success') {
                             callback();
                         } else {
@@ -101,7 +101,7 @@
                     });
                 },
                 "Delete": function(id, callback, error) {
-                    $http.get(ngCurrentLoc + "/Tasks/DeleteAsync/" + id).then(function (response) {
+                    $http.delete(ngCurrentLoc + "/Tasks/DeleteAsync/" + id).then(function (response) {
                         if (response.data.Result === 'Success') {
                             callback(response.data.Value);
                         } else {
