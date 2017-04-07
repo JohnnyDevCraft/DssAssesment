@@ -22,5 +22,17 @@ namespace ToDoList.EntityFramework
 		public DateTime DueDate { get; set; }
 
 		public bool IsCompleted { get; set; }
-	}
+
+        [Column(TypeName ="datetime2")]
+        public DateTime? CompletedAt { get; set; }
+
+	    public int CategoryId { get; set; }
+
+        [ForeignKey("CategoryId")]
+        public Category Category { get; set; }
+
+	    public bool Canceled { get; set; }
+
+	    public string CancelReason { get; set; }
+    }
 }

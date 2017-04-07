@@ -26,6 +26,10 @@ namespace ToDoList.Web.Models
         [Required]
         public bool Completed { get; set; }
 
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:G}")]
+        public DateTime? CompletedAt { get; set; }
+
         public TaskEditViewModel()
         { }
 
@@ -37,6 +41,7 @@ namespace ToDoList.Web.Models
             Priority = task.Priority;
             DueDate = task.DueDate;
             Completed = task.IsCompleted;
+            CompletedAt = task.CompletedAt;
         }
     }
 }

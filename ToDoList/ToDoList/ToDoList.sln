@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.Web", "ToDoList.Web\ToDoList.Web.csproj", "{9C81806F-9C64-4634-BE15-31D2C9378CA3}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -12,6 +12,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList.EntityFramework", "ToDoList.EntityFramework\ToDoList.EntityFramework.csproj", "{91B726AC-3042-4C5D-880A-010AB60DFB83}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ToDoList", "ToDoList\ToDoList.csproj", "{315651A4-B20A-44FC-9756-9A8728E1B9B8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EF68AEC6-F28A-4D56-BF21-950DC2B3E8AD}"
+	ProjectSection(SolutionItems) = preProject
+		Test-Tasks.txt = Test-Tasks.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

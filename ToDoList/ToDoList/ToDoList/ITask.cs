@@ -15,5 +15,13 @@ namespace ToDoList
 		DateTime DueDate { get; }
 
 		bool IsCompleted { get; }
+
+        DateTime? CompletedAt { get; }
+
+        int CategoryId { get; }
+
+        bool Canceled { get; }
+
+        string CancelReason { get; }
 	}
 }

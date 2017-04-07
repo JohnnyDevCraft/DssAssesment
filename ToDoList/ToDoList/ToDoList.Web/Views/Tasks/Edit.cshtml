@@ -66,6 +66,19 @@
         </div>
 
         <div class="form-group">
+            <label for="inputCompletedAt" class="col-md-2 control-label">Completed At</label>
+            <div class="col-md-10 input-group date" id="completedAtPicker">
+                <span>
+                    @Html.TextBoxFor(model => model.CompletedAt , new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CompletedAt, String.Empty, new { @class = "text-danger" })
+                </span>
+                <span class="input-group-addon">
+                    <i class="fa fa-fw fa-calendar"></i>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10 padding-left-right-0">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -83,5 +96,12 @@
     </script>
 
     @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript" src="~/Scripts/moment.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap-datetimepicker.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#completedAtPicker").datetimepicker();
+        }());
+    </script>
 
 }
