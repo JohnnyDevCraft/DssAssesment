@@ -20,12 +20,15 @@
                 <td>{{cat.Description}}</td>
                 <td>
                     <button class="btn btn-xs btn-default" ng-click="EditItem(cat.Id)">Edit</button>
-                    <button class="btn btn-xs btn-success" ng-click="NewItem()">New</button>
                     <button class="btn btn-xs btn-danger" ng-click="Delete(cat.Id)">Delete</button>
                 </td>
             </tr>
         </table>
-        <button class="btn btn-lg btn-success" ng-show="categories.categories.length === 0" ng-click="NewItem()">Create New Category</button>
+        <div class="btn-group" role="group" aria-label="Availble Actions">
+            <button type="button" class="btn btn-success" ng-click="NewItem()">New Category</button>
+            <button type="button" class="btn btn-default" ng-click="GetCategories()">Refresh</button>
+            <button type="button" class="btn btn-default" ng-click="GotoTasks()">Manage Tasks</button>
+        </div>
     </div>
     <div id="EditItem" ng-hide="view != 'Edit'">
         <form>

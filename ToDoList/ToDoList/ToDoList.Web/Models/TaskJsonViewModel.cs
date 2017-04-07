@@ -20,19 +20,16 @@ namespace ToDoList.Web.Models
 
         [Required]
         public int Priority { get; set; }
-
-        [Required]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM/dd/yyyy}")]
-        public DateTime DueDate { get; set; }
-
-        [Required]
+        
+        public string DueDate { get; set; }
+        
         public bool Completed { get; set; }
-
-        [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:G}")]
-        public DateTime? CompletedAt { get; set; }
+        
+        public string CompletedAt { get; set; }
 
         [Required]
-        public int CategoryId { get; set; }
+        public string CategoryId { get; set; }
+
+        public string Category { get; set; }
     }
 }

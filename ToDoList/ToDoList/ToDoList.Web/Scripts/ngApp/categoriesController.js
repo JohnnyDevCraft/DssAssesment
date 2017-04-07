@@ -70,6 +70,7 @@ var catagoriesController = ngApplication.controller(ctrlName,
         $scope.GetCategories = function() {
             dlservice.Categories.Get($scope.SetCategories);
             $scope.view = "List";
+            $scope.ErrorsReturned = false;
         };
 
         $scope.SetCategories = function(data) {
@@ -88,6 +89,10 @@ var catagoriesController = ngApplication.controller(ctrlName,
         $scope.Delete = function(id) {
             dlservice.Categories.Delete(id, $scope.GetCategories, $scope.SetErrors);
         };
+
+        $scope.GotoTasks = function () {
+            window.location = ngCurrentLoc;
+        }
 
         $scope.GetCategories();
 

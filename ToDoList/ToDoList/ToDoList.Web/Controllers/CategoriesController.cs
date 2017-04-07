@@ -11,7 +11,7 @@ using ToDoList.Web.Models;
 
 namespace ToDoList.Web.Controllers
 {
-    public class CategoriesController : Controller
+    public class CategoriesController : BaseJsonController<Category>
     {
 
         private ToDoListDbContext _db { get; }
@@ -55,94 +55,116 @@ namespace ToDoList.Web.Controllers
         [HttpPost]
         public async Task<JsonResult> CreateAsync([Bind(Include = "Name, Description")]CategoryViewModel model)
         {
-            if (!ModelState.IsValid)
-                return Json(new JsonNoticeViewModel<CategoryViewModel>
-                {
-                    Result = "Failure",
-                    ValidationResults =
-                        ModelState.Values.Where(s => s.Errors.Any())
-                            .Select(s => s.Errors[0].ErrorMessage)
-                            .ToList()
-                }, JsonRequestBehavior.AllowGet);
-
-            var obj = model.ToDataModel();
-
-            var result = await _cm.AddAsync(obj);
-
-            if (result.ValidationResults.HasErrors())
+            try
             {
-                return Json(new JsonNoticeViewModel<CategoryViewModel>()
-                {
-                    Value = null,
-                    Result = "Failure",
-                    ValidationResults = result.ValidationResults.Select(r=>r.ErrorMessage).ToList()
-                }, JsonRequestBehavior.AllowGet);
-            }
+                if (!ModelState.IsValid)
+                    return Json(new JsonNoticeViewModel<CategoryViewModel>
+                    {
+                        Result = "Failure",
+                        ValidationResults =
+                            ModelState.Values.Where(s => s.Errors.Any())
+                                .Select(s => s.Errors[0].ErrorMessage)
+                                .ToList()
+                    }, JsonRequestBehavior.AllowGet);
 
-            var rv = await _cm.GetAllAsync();
-
-            return Json(new JsonNoticeViewModel<List<CategoryViewModel>>()
-            {
-                Result = "Success",
-                Value = rv.Select(c=>c.ToViewModel()).ToList()
-            }, JsonRequestBehavior.AllowGet);
-        }
-
-        [HttpPost]
-        public async Task<JsonResult> UpdateAsync([Bind(Include = "Id, Name, Description")]CategoryViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
                 var obj = model.ToDataModel();
-                var result = await _cm.Update(obj);
 
-                if (result.HasErrors())
+                var result = await _cm.AddAsync(obj);
+
+                if (result.ValidationResults.HasErrors())
                 {
                     return Json(new JsonNoticeViewModel<CategoryViewModel>()
                     {
                         Value = null,
                         Result = "Failure",
-                        ValidationResults = result.Select(r=>r.ErrorMessage).ToList()
+                        ValidationResults = result.ValidationResults.Select(r=>r.ErrorMessage).ToList()
                     }, JsonRequestBehavior.AllowGet);
                 }
 
-                var rv = await _cm.GetCategoryByIdAsync(obj.Id);
+                var rv = await _cm.GetAllAsync();
 
-                return Json(new JsonNoticeViewModel<CategoryViewModel>()
+                return Json(new JsonNoticeViewModel<List<CategoryViewModel>>()
                 {
                     Result = "Success",
-                    Value = rv.ToViewModel()
+                    Value = rv.Select(c=>c.ToViewModel()).ToList()
                 }, JsonRequestBehavior.AllowGet);
             }
-            return Json(new JsonNoticeViewModel<CategoryViewModel>
+            catch (Exception e)
             {
-                Result = "Failure",
-                ValidationResults = ModelState.Values.Where(s => s.Errors.Any()).Select(s => s.Errors[0].ErrorMessage).ToList()
-            }, JsonRequestBehavior.AllowGet);
+                return Json(GetModel(e), JsonRequestBehavior.AllowGet);
+                throw;
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> UpdateAsync([Bind(Include = "Id, Name, Description")]CategoryViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var obj = model.ToDataModel();
+                    var result = await _cm.Update(obj);
+
+                    if (result.HasErrors())
+                    {
+                        return Json(new JsonNoticeViewModel<CategoryViewModel>()
+                        {
+                            Value = null,
+                            Result = "Failure",
+                            ValidationResults = result.Select(r=>r.ErrorMessage).ToList()
+                        }, JsonRequestBehavior.AllowGet);
+                    }
+
+                    var rv = await _cm.GetCategoryByIdAsync(obj.Id);
+
+                    return Json(new JsonNoticeViewModel<CategoryViewModel>()
+                    {
+                        Result = "Success",
+                        Value = rv.ToViewModel()
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new JsonNoticeViewModel<CategoryViewModel>
+                {
+                    Result = "Failure",
+                    ValidationResults = ModelState.Values.Where(s => s.Errors.Any()).Select(s => s.Errors[0].ErrorMessage).ToList()
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                return Json(GetModel(e), JsonRequestBehavior.AllowGet );
+            }
         }
 
         [HttpGet]
         [Route("categories/delete/{id:int}")]
         public async Task<JsonResult> DeleteAsync(int id)
         {
-            var model = await _cm.GetCategoryByIdAsync(id);
-            if (model != null)
+            try
             {
-                if (await _cm.Delete(model))
+                var model = await _cm.GetCategoryByIdAsync(id);
+                if (model != null)
                 {
-                    return Json(new JsonNoticeViewModel<CategoryViewModel>
+                    if (await _cm.Delete(model))
                     {
-                        Result = "Success"
-                    }, JsonRequestBehavior.AllowGet);
+                        return Json(new JsonNoticeViewModel<CategoryViewModel>
+                        {
+                            Result = "Success"
+                        }, JsonRequestBehavior.AllowGet);
 
+                    }
                 }
-            }
 
-            return Json(new JsonNoticeViewModel<CategoryViewModel>
+                return Json(new JsonNoticeViewModel<CategoryViewModel>
+                {
+                    Result = "Failure",
+                    ValidationResults = new List<string>() {"Unable to delete record."}
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
             {
-                Result = "Failure",
-                ValidationResults = new List<string>() {"Unable to delete record."}
-            }, JsonRequestBehavior.AllowGet);
+                return Json(GetModel(e), JsonRequestBehavior.AllowGet);
+            }
         }
 
 

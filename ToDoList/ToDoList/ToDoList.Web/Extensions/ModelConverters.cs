@@ -31,31 +31,36 @@ namespace ToDoList.Web.Extensions
 
         public static Task ToDataModel(this TaskJsonViewModel vm)
         {
-            return new Task()
+            var t = new Task()
             {
                 Id = vm.Id,
                 Name = vm.Name,
                 Description = vm.Description,
-                CategoryId = vm.CategoryId,
-                CompletedAt = vm.CompletedAt,
-                DueDate = vm.DueDate,
-                IsCompleted = vm.Completed,
-                Priority = vm.Priority
+                CategoryId = int.Parse(vm.CategoryId),
+                Priority = vm.Priority,
+                IsCompleted = vm.Completed
             };
+
+            if (vm.CompletedAt != null) t.CompletedAt = DateTime.Parse(vm.CompletedAt);
+            if (vm.DueDate != null) t.DueDate = DateTime.Parse(vm.DueDate);
+
+            return t;
+
         }
 
         public static TaskJsonViewModel ToViewModel(this Task task)
         {
             return new TaskJsonViewModel()
             {
-                CategoryId = task.CategoryId,
-                CompletedAt = task.CompletedAt,
+                CategoryId = task.CategoryId.ToString(),
+                CompletedAt = task.CompletedAt?.ToString("G") ?? "",
                 Completed = task.IsCompleted,
                 Description = task.Description,
-                DueDate = task.DueDate,
+                DueDate = task.DueDate.ToString("G"),
                 Id = task.Id,
                 Name = task.Name,
-                Priority = task.Priority
+                Priority = task.Priority,
+                Category = task.Category.Name
             };
         }
     }
