@@ -18,6 +18,8 @@ namespace ToDoList.Web
 				url: "{controller}/{action}/{id}",
 				defaults: new { controller = "Tasks", action = "Index", id = UrlParameter.Optional }
 			);
-		}
+
+            routes.MapMvcAttributeRoutes();
+        }
 	}
 }

@@ -4,7 +4,7 @@ var TaskController = ngApplication.controller(TaskControllerName,
 [
     "$scope", "dlservice", function($scope, dlservice) {
 
-        var sortTasksAsc = function () {
+        $scope.SortTasksFinal = function () {
             switch ($scope.CurrentSortBy) {
                 case "Name":
                     if ($scope.CurrentDirectionAsc) {
@@ -42,11 +42,15 @@ var TaskController = ngApplication.controller(TaskControllerName,
                 case "DueDate":
                     if ($scope.CurrentDirectionAsc) {
                         $scope.AllTasks.sort(function (obj1, obj2) {
-                            return obj1.DueDate - obj2.DueDate;
+                            if (obj1.DueDate > obj2.DueDate) return 1;
+                            if (obj1.DueDate < obj2.DueDate) return -1;
+                            return 0;
                         });
                     } else {
                         $scope.AllTasks.sort(function (obj1, obj2) {
-                            return obj2.DueDate - obj1.DueDate;
+                            if (obj1.DueDate > obj2.DueDate) return -1;
+                            if (obj1.DueDate < obj2.DueDate) return 1;
+                            return 0;
                         });
                     }
                     break;
@@ -85,6 +89,16 @@ var TaskController = ngApplication.controller(TaskControllerName,
                     break;
 
                 default:
+            }
+        }
+
+        $scope.SearchString = "";
+
+        $scope.Search = function() {
+            if ($scope.SearchString === "") {
+                $scope.ShowAll();
+            } else {
+                dlservice.Tasks.Search($scope.SearchString, $scope.LoadTasks, $scope.ShowErrors);
             }
         }
 
@@ -160,10 +174,11 @@ var TaskController = ngApplication.controller(TaskControllerName,
 
             if ($scope.CurrentSortBy === sortBy) {
                 $scope.CurrentDirectionAsc = !$scope.CurrentDirectionAsc;
+                $scope.SortTasksFinal();
             } else {
                 $scope.CurrentSortBy = sortBy;
                 $scope.CurrentDirectionAsc = true;
-                sortTasksAsc();
+                $scope.SortTasksFinal();
             }
 
         }
@@ -205,9 +220,6 @@ var TaskController = ngApplication.controller(TaskControllerName,
             $("#ProcessingModal").modal('hide');
         }
 
-        $scope.Search = function(searchStr) {
-            dlservice.Tasks.Search(searchStr, $scope.LoadTasks, $scope.ShowErrors);
-        }
 
         $scope.ShowAll = function() {
             dlservice.Tasks.Get($scope.LoadTasks);

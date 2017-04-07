@@ -155,6 +155,8 @@ namespace ToDoList.Web.Controllers
 	    {
 	        var task = await TaskManager.GetTaskById(id);
 
+	        task.Category = await CategoryManager.GetCategoryByIdAsync(task.CategoryId);
+
 	        return Json(task != null ? 
                 GetModel(task.ToViewModel()) : 
                 GetModel("Unable to locate record."), 
@@ -178,17 +180,30 @@ namespace ToDoList.Web.Controllers
 	        return Json(GetModels(models), JsonRequestBehavior.AllowGet);
 	    }
         [HttpGet]
-        public async Tasks.Task<JsonResult> SearchAsync(string searchStr)
+        public async Tasks.Task<JsonResult> SearchAsync(string id)
 	    {
-	        var alltasks = await TaskManager.GetAllAsync();
-	        var search =
-	            alltasks.Where(t => t.Name.Contains(searchStr) || t.Description.Contains(searchStr))
-	                .Select(t => t.ToViewModel())
-	                .ToList();
+	        try
+	        {
+	            var alltasks = await TaskManager.GetAllAsync();
 
-	        return !search.Any()? 
-                Json(GetModel("No Results"), JsonRequestBehavior.AllowGet): 
-                Json(GetModels(search), JsonRequestBehavior.AllowGet);
+                foreach (var t in alltasks)
+                {
+                    t.Category = await CategoryManager.GetCategoryByIdAsync(t.CategoryId);
+                }
+
+                var search =
+	                alltasks.Where(t => t.Name != null && t.Name.Contains(id) || t.Description != null && t.Description.Contains(id))
+	                    .Select(t => t.ToViewModel())
+	                    .ToList();
+
+	            return !search.Any()? 
+	                Json(GetModel("No Results"), JsonRequestBehavior.AllowGet): 
+	                Json(GetModels(search), JsonRequestBehavior.AllowGet);
+	        }
+	        catch (Exception e)
+	        {
+	            return Json(GetModel(e), JsonRequestBehavior.AllowGet);
+	        }
 	    }
         [HttpPost]
 	    public async Tasks.Task<JsonResult> CreateAsync([Bind(Include = "Name, Description, Priority, DueDate, CategoryId")]TaskJsonViewModel model)

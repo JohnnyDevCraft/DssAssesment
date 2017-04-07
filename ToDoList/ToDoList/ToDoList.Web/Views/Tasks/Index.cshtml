@@ -5,12 +5,23 @@
 
 <div class="container" ng-controller="TaskController">
     <div id="ListView" ng-show="ViewType == 'List'">
+        <div class="row">
+            <div class="col-lg-8">
+                <h2>Task List</h2>
+            </div>
+            <div class="col-lg-4">
+                <div class="input-group">
+                    <div class="input-group-addon"><span class="glyphicon glyphicon-search"></span></div>
+                    <input type="text" class="form-control" id="Search" placeholder="Search / Filter" ng-change="Search()" ng-model="SearchString">
+                </div>
+            </div>
+        </div>
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>Task</th>
-                    <th>Priority</th>
-                    <th>Due Date</th>
+                    <th ng-click="SortTasks('Priority')">Priority<span class="glyphicon glyphicon-chevron-down" ng-show="CurrentSortBy == 'Priority' && CurrentDirectionAsc == false"></span><span class="glyphicon glyphicon-chevron-up" ng-show="CurrentSortBy == 'Priority' && CurrentDirectionAsc == true"></span></th>
+                    <th ng-click="SortTasks('DueDate')">Due Date<span class="glyphicon glyphicon-chevron-down" ng-show="CurrentSortBy == 'DueDate' && CurrentDirectionAsc == false"></span><span class="glyphicon glyphicon-chevron-up" ng-show="CurrentSortBy == 'DueDate' && CurrentDirectionAsc == true"></span></th>
                     <th>Completed</th>
                     <th>Completed At</th>
                     <th>Category</th>
