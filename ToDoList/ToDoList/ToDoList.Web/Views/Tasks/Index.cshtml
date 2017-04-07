@@ -1,67 +1,135 @@
-﻿@using ToDoList.Web.Models;
-@model TasksViewModel
-@{
+﻿@{
 	ViewBag.Title = "Tasks";
 }
-@if (Model.Tasks.Count != 0)
-{
-	<table class="table table-bordered table-striped">
-		<thead>
-			<tr>
-				<th>
-					Task
-				</th>
-				<th>
-					Priority
-				</th>
-				<th>
-					Due Date
-				</th>
-				<th>
-					Completed
-				</th>
-                <th>Completed At</th>
-                <th></th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var task in Model.Tasks)
-			{
-				<tr>
-					<td>
-						<strong>@task.Name</strong><br />
-						@task.Description
-					</td>
-					<td>
-						@task.Priority
-					</td>
-					<td>
-						@task.DueDate
-					</td>
-					<td>
-						@task.Completed
-					</td>
+
+
+<div class="container" ng-controller="TaskController">
+    <div id="ListView" ng-show="ViewType == 'List'">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Task</th>
+                    <th>Priority</th>
+                    <th>Due Date</th>
+                    <th>Completed</th>
+                    <th>Completed At</th>
+                    <th>Category</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="task in AllTasks">
                     <td>
-                        @task.CompletedAt
+                        <strong>{{task.Name}}</strong><br />
+                        {{task.Description}}
                     </td>
+                    <td>{{task.Priority}}</td>
+                    <td>{{task.DueDate}}</td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", routeValues: new { id = task.Id }, htmlAttributes: new { @class = "btn btn-primary btn-sm" })
-                        @Html.ActionLink("Delete", "Delete", routeValues: new { id = task.Id }, htmlAttributes: new { @class = "btn btn-danger btn-sm" })
+                        <input type="checkbox" readonly ng-model="task.Completed"/>
                     </td>
-				</tr>
-			}
-		</tbody>
-	</table>
-}
-else
-{
-	<div class="alert alert-info" role="alert">
-		There are no tasks.
-	</div>
+                    <td>{{task.CompletedAt}}</td>
+                    <td>{{task.Category}}</td>
+                    <td>
+                        <button class="btn btn-default btn-xs" ng-click="EditTask(task.Id)">Edit</button>
+                        <button class="btn btn-xs btn-danger" ng-click="Delete(task.Id)">Delete</button>
+                        <button class="btn btn-xs btn-success" ng-click="Complete(task.Id)">Complete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="btn-group" role="group" aria-label="Availble Actions">
+            <button type="button" class="btn btn-success" ng-click="NewTask()">New Task</button>
+            <button type="button" class="btn btn-default" ng-click="ShowAll()">Refresh</button>
+            <button type="button" class="btn btn-default" ng-click="GotoCategories()">Manage Categories</button>
+        </div>
+    </div>  
+    <div id="EditView" ng-show="ViewType == 'Edit'">
+        <form>
+            <h2>Edit Item: {{TaskEditing.Name}}</h2>
+            <div class="form-group">
+                <label for="EditName">Name</label>
+                <input type="text" class="form-control" ng-model="TaskEditing.Name" id="EditName" placeholder="EditName">
+            </div>
+            <div class="form-group">
+                <label for="EditDescription">Description</label>
+                <input type="text" class="form-control" ng-model="TaskEditing.Description" id="EditDescription" placeholder="EditDescription">
+            </div>
+            <div class="form-group">
+                <label for="Priority">Priority</label>
+                <input type="text" class="form-control" ng-model="TaskEditing.Priority" id="Priority" placeholder="Priority">
+            </div>
+            <div class="form-group">
+                <label for="DueDate">Due Date</label>
+                <input type="text" class="form-control form-datetime" ng-model="TaskEditing.DueDate" id="DueDate" placeholder="DueDate">
+            </div>
+            
+            <div class="form-group">
+                <label for="Category">Category</label>
+                <select class="form-control" id="Category" ng-model ="TaskEditing.CategoryId">
+                    <option value="">--Not Selected--</option>
+                    <option ng-repeat="cat in Categories" value="{{cat.Id}}">{{cat.Name}}</option>
+                </select>
+            </div>
+            <button class="btn btn-default" ng-click="CompleteEdit()">Save Changes</button>
+            <button class="btn btn-danger" ng-click="CancelEdit()">Cancel</button>
+        </form>
+    </div>
+    <div id="CreateView" ng-show="ViewType == 'Create'">
+        <form>
+            <h2>New Item</h2>
+            <div class="form-group">
+                <label for="CreateName">Name</label>
+                <input type="text" class="form-control" ng-model="TaskCreating.Name" id="CreateName" placeholder="CreateName">
+            </div>
+            <div class="form-group">
+                <label for="CreateDescription">Description</label>
+                <input type="text" class="form-control" ng-model="TaskCreating.Description" id="CreateDescription" placeholder="EditDescription">
+            </div>
+            <div class="form-group">
+                <label for="CreatePriority">Priority</label>
+                <input type="number" class="form-control" ng-model="TaskCreating.Priority" id="CreatePriority" placeholder="CreatePriority">
+            </div>
+            <div class="form-group">
+                <label for="CreateDueDate">Due Date</label>
+                <input type="text" class="form-control form-datetime" ng-model="TaskCreating.DueDate" id="CreateDueDate" placeholder="CreateDueDate">
+            </div>
+            <div class="form-group">
+                <label for="CreateCategory">Category</label>
+                <select class="form-control" id="CreateCategory" ng-model="TaskCreating.CategoryId">
+                    <option value="">--Not Selected--</option>
+                    <option ng-repeat="cat in Categories" value={{cat.Id}}>{{cat.Name}}</option>
+                </select>
+            </div>
+            <button class="btn btn-default" ng-click="CompleteCreate()">Save Changes</button>
+            <button class="btn btn-danger" ng-click="CancelCreate()">Cancel</button>
+        </form>
+    </div>
+    <br/>
+    <div id="ErrorBlock" ng-hide="!ErrorsActive">
+        <div class="panel panel-danger">
+            <div class="panel-heading">Errors Found</div>
+            <div class="panel-body">
+                <p ng-repeat="error in Errors">
+                    - {{error}}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+	
+@section ngScripts{
+    <script type="text/javascript" src="~/Scripts/ngApp/dlService.js"></script>
+    <script type="text/javascript" src="~/Scripts/ngapp/tasksController.js"></script>
+
 }
 
-<div class="form-group">
-	<div class="col-md-offset-5 col-md-2">
-		@Html.ActionLink("Create New Task", "Create", routeValues: null, htmlAttributes: new { @class = "btn btn-default btn-block" })
-	</div>
-</div>
+@section scripts
+{
+    <script type="text/javascript">
+        $(".form-datetime").datetimepicker({
+            format: "mm/dd/yyyy HH:ii:ss P",
+            todayBtn: true
+        });
+    </script>
+}
