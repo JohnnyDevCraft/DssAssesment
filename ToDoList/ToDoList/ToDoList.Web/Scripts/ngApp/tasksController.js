@@ -140,6 +140,51 @@ var TaskController = ngApplication.controller(TaskControllerName,
             dlservice.Tasks.Create($scope.TaskCreating, $scope.ShowAll, $scope.ShowErrors);
         }
 
+        $scope.UnCancel = function (id) {
+            $scope.AllTasks.forEach(function (item) {
+                if (item.Id === id) {
+                    $scope.TaskEditing = item;
+                }
+            });
+            $scope.TaskEditing.Canceled = false;
+            $scope.TaskEditing.CancelReason = "";
+            dlservice.Tasks.Update($scope.TaskEditing, $scope.ShowAll, $scope.ShowErrors);
+        }
+
+        $scope.Cancel = function(id) {
+            $scope.AllTasks.forEach(function (item) {
+                if (item.Id === id) {
+                    $scope.TaskEditing = item;
+                }
+            });
+            $("#CancelModal").modal("show");
+        }
+        $scope.CancelCancellation = function(){
+            $("#CancelModal").modal("hide");
+        }
+        $scope.CommitCancel = function() {
+            $scope.TaskEditing.Canceled = true;
+            dlservice.Tasks.Update($scope.TaskEditing, $scope.ShowAll, $scope.ShowErrors);
+            $("#CancelModal").modal("hide");
+        }
+
+
+
+        $scope.UnComplete = function (id) {
+            var cItem = {};
+            $scope.AllTasks.forEach(function (item) {
+                if (item.Id === id) {
+                    cItem = item;
+                }
+            });
+
+            cItem.Completed = false;
+            cItem.CompletedAt = null;
+            $("#ProcessingModal").modal('show');
+            dlservice.Tasks.Update(cItem, $scope.ShowAll, $scope.ShowErrors);
+
+        }
+
         $scope.Complete = function(id) {
             var cItem = {};
             $scope.AllTasks.forEach(function (item) {
@@ -225,17 +270,22 @@ var TaskController = ngApplication.controller(TaskControllerName,
 
         $scope.ViewActive = function () {
             $scope.FilteredTasks = $scope.AllTasks.filter(function (value) {
-                return value.Completed === false;
+                return value.Completed === false && value.Canceled === false;
             });
         }
         $scope.ViewComplete = function () {
             $scope.FilteredTasks = $scope.AllTasks.filter(function (value) {
-                return value.Completed === true;
+                return value.Completed === true && value.Canceled === false;
             });
         }
         $scope.ViewAll = function () {
             $scope.FilteredTasks = $scope.AllTasks.filter(function (value) {
                 return true;
+            });
+        }
+        $scope.ViewCanceled = function () {
+            $scope.FilteredTasks = $scope.AllTasks.filter(function (value) {
+                return value.Canceled === true;
             });
         }
 

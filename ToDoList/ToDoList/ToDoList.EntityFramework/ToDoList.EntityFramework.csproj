@@ -74,6 +74,10 @@
     <Compile Include="Migrations\201704062128521_Added Category.Designer.cs">
       <DependentUpon>201704062128521_Added Category.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704070453085_Cancelations Fields.cs" />
+    <Compile Include="Migrations\201704070453085_Cancelations Fields.Designer.cs">
+      <DependentUpon>201704070453085_Cancelations Fields.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ReflectionExtensions.cs" />
     <Compile Include="Task.cs" />
@@ -106,6 +110,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704062128521_Added Category.resx">
       <DependentUpon>201704062128521_Added Category.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704070453085_Cancelations Fields.resx">
+      <DependentUpon>201704070453085_Cancelations Fields.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -44,7 +44,10 @@
                     <td>
                         <button class="btn btn-default btn-xs" ng-click="EditTask(task.Id)">Edit</button>
                         <button class="btn btn-xs btn-danger" ng-click="Delete(task.Id)">Delete</button>
-                        <button class="btn btn-xs btn-success" ng-click="Complete(task.Id)">Complete</button>
+                        <button class="btn btn-xs btn-success" ng-click="Complete(task.Id)" ng-show="task.Completed == false">Complete</button>
+                        <button class="btn btn-xs btn-success" ng-click="UnComplete(task.Id)" ng-show="task.Completed == true">UnComplete</button>
+                        <button class="btn btn-xs btn-success" ng-click="Cancel(task.Id)" ng-show="task.Canceled == false">Cancel</button>
+                        <button class="btn btn-xs btn-success" ng-click="UnCancel(task.Id)" ng-show="task.Canceled == true">UnCancel</button>
                     </td>
                 </tr>
             </tbody>
@@ -60,6 +63,7 @@
                 <div class="btn-group pull-right" role="group" aria-label="Availble Actions">
                     <button type="button" class="btn btn-default" ng-click="ViewActive()">View Active</button>
                     <button type="button" class="btn btn-default" ng-click="ViewComplete()">View Complete</button>
+                    <button type="button" class="btn btn-default" ng-click="ViewCanceled()">View Canceled</button>
                     <button type="button" class="btn btn-default" ng-click="ViewAll()">View All</button>
                 </div>
             </div>
@@ -138,7 +142,30 @@
             </div>
         </div>
     </div>
+    
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="CancelModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="cancel">Reason For Cancelation</label>
+                        <textarea type="text" class="form-control" ng-model="TaskEditing.CancelReason" id="cancel" placeholder="Cancel Reason"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="CancelCancellation()">Close</button>
+                    <button type="button" class="btn btn-primary" ng-click="CommitCancel()">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </div>
+
 	
 @section ngScripts{
     <script type="text/javascript" src="~/Scripts/ngApp/dlService.js"></script>
@@ -155,3 +182,5 @@
         });
     </script>
 }
+
+
